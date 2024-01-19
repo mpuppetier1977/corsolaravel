@@ -21,6 +21,35 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
+    - name: Archive
+      run: composer archive --format=zip --file=artifact.zip
+      
+    - uses: actions/upload-artifact@master
+      name: Upload Artifact
+      with:
+        name: application-artifact
+        path: artifact.zip
+      
+  tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/download-artifact@master
+      name: Download Artifact
+      with:
+        name: application-artifact
+        
+    - name: Unzip Artifact
+      run: unzip artifact.zip; rm artifact.zip
+    
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
