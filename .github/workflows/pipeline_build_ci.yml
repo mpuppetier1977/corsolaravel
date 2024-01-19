@@ -31,7 +31,7 @@ jobs:
         path: artifact.zip
       
   tests:
-
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
