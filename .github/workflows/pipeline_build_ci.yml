@@ -22,7 +22,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Archive
-      run: composer archive --format=zip --file=artifact.zip
+      run: composer archive --format=zip --file=artifact
       
     - uses: actions/upload-artifact@master
       name: Upload Artifact
