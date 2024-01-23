@@ -28,12 +28,12 @@ class Product {
 		return $totalPrice;
 	}
 
-	private function applyDiscount($price) : float {
+	private function applyDiscount(float $price) : float {
 		// Applica uno sconto al prezzo
 		return $price * 0.9;
 	}
 
-	private function applyTax($price) : float {
+	private function applyTax(float $price) : float {
 		// Applica una tassa al prezzo
 		return $price * 1.08;
 	}
