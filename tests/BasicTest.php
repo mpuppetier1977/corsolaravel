@@ -1,8 +1,9 @@
 <?php
 
-use Abruno\TennisChallenge\Player;
-use Abruno\TennisChallenge\TennisMatch;
 use PHPUnit\Framework\TestCase;
+use Abruno\TennisChallenge\Player;
+use Abruno\TennisChallenge\services\tennismatch\TennisMatch;
+use Abruno\TennisChallenge\Services\Tennismatch\Facade\TennisMatchFacade;
 
 final class BasicTest extends TestCase
 {
@@ -12,112 +13,125 @@ final class BasicTest extends TestCase
 
 	// The match starts with both player with the score of "love"
 	public function testMatchStartWithBothPlayerLove(): void {
-		$match = $this->getTennisMatch();
-
-		$this->assertTrue($match->getScorePlayerA() == "love" && $match->getScorePlayerA() == $match->getScorePlayerB());
+		//$match = $this->getTennisMatch();
+		TennisMatchFacade::setInstance(null);
+		$playerA = new Player();
+		$playerB = new Player();
+		TennisMatchFacade::setPlayers($playerA,$playerB);
+		//die('fine');
+		$this->assertTrue(TennisMatchFacade::getScorePlayerA() == "love" && TennisMatchFacade::getScorePlayerA() == TennisMatchFacade::getScorePlayerB());
 	}
 
 	// The scoring system of Tennis increases as follows: "15", "30", "40"
 	public function testScoreIncreases15_30_40_PlayerA(): void {
 
-		$match = $this->getTennisMatch();
-
-		$this->assertTrue($match->incrementScorePlayerA()->getScorePlayerA() == "15");
-		$this->assertTrue($match->incrementScorePlayerA()->getScorePlayerA() == "30");
-		$this->assertTrue($match->incrementScorePlayerA()->getScorePlayerA() == "40");
+		//$match = $this->getTennisMatch();
+		//$match->incrementScorePlayerA();
+		TennisMatchFacade::setInstance(null);
+		TennisMatchFacade::setPlayers(new Player(),new Player());
+/*		TennisMatchFacade::incrementScorePlayerA();
+		die('fine');*/
+		$this->assertTrue(TennisMatchFacade::incrementScorePlayerA()->getScorePlayerA() == "15");
+		$this->assertTrue(TennisMatchFacade::incrementScorePlayerA()->getScorePlayerA() == "30");
+		$this->assertTrue(TennisMatchFacade::incrementScorePlayerA()->getScorePlayerA() == "40");
 	}
 
 	public function testScoreIncreases15_30_40_PlayerB(): void {
 
-		$match = $this->getTennisMatch();
-
-		$this->assertTrue($match->incrementScorePlayerB()->getScorePlayerB() == "15", $match->getScorePlayerB() . ' it is not 15');
-		$this->assertTrue($match->incrementScorePlayerB()->getScorePlayerB() == "30");
-		$this->assertTrue($match->incrementScorePlayerB()->getScorePlayerB() == "40");
+		//$match = $this->getTennisMatch();
+		TennisMatchFacade::setInstance(null);
+		TennisMatchFacade::setPlayers(new Player(),new Player());
+		$this->assertTrue(TennisMatchFacade::incrementScorePlayerB()->getScorePlayerB() == "15", TennisMatchFacade::getScorePlayerB() . ' it is not 15');
+		$this->assertTrue(TennisMatchFacade::incrementScorePlayerB()->getScorePlayerB() == "30");
+		$this->assertTrue(TennisMatchFacade::incrementScorePlayerB()->getScorePlayerB() == "40");
 
 	}
 
 	// In the simple scenario, a player wins the game if he scores another time after "40"
 	public function testScoreIncreases_After40_Game_PlayerA(): void {
 
-		$match = $this->getTennisMatch();
-
-		$match->incrementScorePlayerA()
+		//$match = $this->getTennisMatch();
+		TennisMatchFacade::setInstance(null);
+		TennisMatchFacade::setPlayers(new Player(),new Player());
+		TennisMatchFacade::incrementScorePlayerA()
 		      ->incrementScorePlayerA()
 		      ->incrementScorePlayerA();
 
-		$this->assertTrue($match->incrementScorePlayerA()->getScorePlayerA() == "Game");
+		$this->assertTrue(TennisMatchFacade::incrementScorePlayerA()->getScorePlayerA() == "Game");
 
 	}
 
 	// In the simple scenario, a player wins the game if he scores another time after "40"
 	public function testScoreIncreases_After40_Game_PlayerB(): void {
 
-		$match = $this->getTennisMatch();
-
-		$match->incrementScorePlayerB()
+		//$match = $this->getTennisMatch();
+		TennisMatchFacade::setInstance(null);
+		TennisMatchFacade::setPlayers(new Player(),new Player());
+		TennisMatchFacade::incrementScorePlayerB()
 		      ->incrementScorePlayerB()
 		      ->incrementScorePlayerB();
 
-		$this->assertTrue($match->incrementScorePlayerB()->getScorePlayerB() == "Game");
+		$this->assertTrue(TennisMatchFacade::incrementScorePlayerB()->getScorePlayerB() == "Game");
 
 	}
 
 	// If both players reach the score of "40", then they transition into a "deuce" state
 	public function testPlayerTransitionIntoDeuce(): void {
 
-		$match = $this->getTennisMatch();
+		//$match = $this->getTennisMatch();
+		TennisMatchFacade::setInstance(null);
+		TennisMatchFacade::setPlayers(new Player(),new Player());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
-		$this->assertFalse($match->checkDeuce());
-
-		$match->incrementScorePlayerB()
+		TennisMatchFacade::incrementScorePlayerB()
 		      ->incrementScorePlayerB()
 		      ->incrementScorePlayerB();
 
-		$this->assertFalse($match->checkDeuce());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerA()
+		TennisMatchFacade::incrementScorePlayerA()
 		      ->incrementScorePlayerA()
 		      ->incrementScorePlayerA();
 
-		$this->assertTrue($match->getScorePlayerB() == "40");
-		$this->assertTrue($match->checkDeuce());
+		$this->assertTrue(TennisMatchFacade::getScorePlayerB() == "40");
+		$this->assertTrue(TennisMatchFacade::checkDeuce());
 
 	}
 
 	// When the players are in "deuce", if one of them scores he moves to "advantage"
 	public function testInDeuceIfScorePlayerGoesInAdvantage(): void {
 
-		$match = $this->getTennisMatch();
+		//$match = $this->getTennisMatch();
+		TennisMatchFacade::setInstance(null);
+		TennisMatchFacade::setPlayers(new Player(),new Player());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
-		$this->assertFalse($match->checkDeuce());
-
-		$match->incrementScorePlayerB()
+		TennisMatchFacade::incrementScorePlayerB()
 		      ->incrementScorePlayerB()
 		      ->incrementScorePlayerB();
 
-		$this->assertFalse($match->checkDeuce());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerA()
+		TennisMatchFacade::incrementScorePlayerA()
 		      ->incrementScorePlayerA()
 		      ->incrementScorePlayerA();
 
-		$this->assertTrue($match->checkDeuce());
+		$this->assertTrue(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerA();
+		TennisMatchFacade::incrementScorePlayerA();
 
-		$this->assertTrue($match->getScorePlayerA() == "advantage");
-		$this->assertFalse($match->checkDeuce());
+		$this->assertTrue(TennisMatchFacade::getScorePlayerA() == "advantage");
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
 		//Faccio tornare a pari "Deuce" i giocatori
-		$match->incrementScorePlayerB();
+		TennisMatchFacade::incrementScorePlayerB();
 
-		$this->assertTrue($match->checkDeuce());
+		$this->assertTrue(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerB();
+		TennisMatchFacade::incrementScorePlayerB();
 
-		$this->assertTrue($match->getScorePlayerB() == "advantage");
-		$this->assertFalse($match->checkDeuce());
+		$this->assertTrue(TennisMatchFacade::getScorePlayerB() == "advantage");
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
 	}
 
@@ -125,94 +139,99 @@ final class BasicTest extends TestCase
 	public function  testIfPlayerWinTheMatchAfterAdvantage(): void {
 
 		//Vittoria playerA
-		$match = $this->getTennisMatch();
-
-		$this->assertFalse($match->checkDeuce());
-		$match->incrementScorePlayerB()
+		//$match = $this->getTennisMatch();
+		TennisMatchFacade::setInstance(null);
+		TennisMatchFacade::setPlayers(new Player(),new Player());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
+		TennisMatchFacade::incrementScorePlayerB()
 		  ->incrementScorePlayerB()
 		  ->incrementScorePlayerB();
 
-		$this->assertFalse($match->checkDeuce());
-		$match->incrementScorePlayerA()
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
+		TennisMatchFacade::incrementScorePlayerA()
 		  ->incrementScorePlayerA()
 		  ->incrementScorePlayerA();
 
-		$this->assertTrue($match->checkDeuce());
+		$this->assertTrue(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerA();
+		TennisMatchFacade::incrementScorePlayerA();
 
-		$this->assertFalse($match->checkDeuce());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
-		$this->assertTrue($match->getScorePlayerA() == "advantage");
-		$this->assertFalse($match->getScorePlayerB() == "advantage");
+		$this->assertTrue(TennisMatchFacade::getScorePlayerA() == "advantage");
+		$this->assertFalse(TennisMatchFacade::getScorePlayerB() == "advantage");
 
-		$match->incrementScorePlayerA();
+		TennisMatchFacade::incrementScorePlayerA();
 
-		$this->assertFalse($match->checkDeuce());
-		$this->assertTrue($match->getScorePlayerA() == "Game");
-		$this->assertTrue($match->whoIsTheWinner() =='PlayerA');
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
+		$this->assertTrue(TennisMatchFacade::getScorePlayerA() == "Game");
+		$this->assertTrue(TennisMatchFacade::whoIsTheWinner() =='PlayerA');
 
 		//Ora facciamo vincere playerB
-		$match = $this->getTennisMatch();
+		TennisMatchFacade::setInstance(null);
+		TennisMatchFacade::setPlayers(new Player(),new Player());
+		//$match = $this->getTennisMatch();
 
-		$this->assertFalse($match->checkDeuce());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerB()
+		TennisMatchFacade::incrementScorePlayerB()
 		  ->incrementScorePlayerB()
 		  ->incrementScorePlayerB();
 
-		$this->assertFalse($match->checkDeuce());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerA()
+		TennisMatchFacade::incrementScorePlayerA()
 		  ->incrementScorePlayerA()
 		  ->incrementScorePlayerA();
 
-		$this->assertTrue($match->checkDeuce());
+		$this->assertTrue(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerB();
+		TennisMatchFacade::incrementScorePlayerB();
 
-		$this->assertFalse($match->checkDeuce());
-		$this->assertTrue($match->getScorePlayerB() == "advantage");
-		$this->assertFalse($match->getScorePlayerA() == "advantage");
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
+		$this->assertTrue(TennisMatchFacade::getScorePlayerB() == "advantage");
+		$this->assertFalse(TennisMatchFacade::getScorePlayerA() == "advantage");
 
-		$match->incrementScorePlayerB();
+		TennisMatchFacade::incrementScorePlayerB();
 
-		$this->assertFalse($match->checkDeuce());
-		$this->assertTrue($match->getScorePlayerB() == "Game");
-		$this->assertTrue($match->whoIsTheWinner() =='PlayerB');
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
+		$this->assertTrue(TennisMatchFacade::getScorePlayerB() == "Game");
+		$this->assertTrue(TennisMatchFacade::whoIsTheWinner() =='PlayerB');
 	}
 
 	//If there is one player in "advantage" and the other scores, both return to "deuce"
 	public function testIfPlayerIsInAdvantageAndOtherScoreBackToDeuce(): void {
-		$match = $this->getTennisMatch();
+		//$match = $this->getTennisMatch();
+		TennisMatchFacade::setInstance(null);
+		TennisMatchFacade::setPlayers(new Player(),new Player());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
-		$this->assertFalse($match->checkDeuce());
-
-		$match->incrementScorePlayerB()
+		TennisMatchFacade::incrementScorePlayerB()
 		  ->incrementScorePlayerB()
 		  ->incrementScorePlayerB();
 
-		$this->assertFalse($match->checkDeuce());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerA()
+		TennisMatchFacade::incrementScorePlayerA()
 		  ->incrementScorePlayerA()
 		  ->incrementScorePlayerA();
 
-		$this->assertTrue($match->checkDeuce());
+		$this->assertTrue(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerA();
+		TennisMatchFacade::incrementScorePlayerA();
 
-		$this->assertFalse($match->checkDeuce());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 
 		//Ora incremento lo score di playerB per riportare in pareggio
-		$match->incrementScorePlayerB();
+		TennisMatchFacade::incrementScorePlayerB();
 
-		$this->assertTrue($match->checkDeuce());
+		$this->assertTrue(TennisMatchFacade::checkDeuce());
 
-		$match->incrementScorePlayerB();
+		TennisMatchFacade::incrementScorePlayerB();
 
-		$this->assertFalse($match->checkDeuce());
+		$this->assertFalse(TennisMatchFacade::checkDeuce());
 	}
+
 
 
 	private function getTennisMatch() : TennisMatch {
@@ -220,6 +239,5 @@ final class BasicTest extends TestCase
 		$playerB = new Player();
 
 		return new TennisMatch( $playerA, $playerB );
-
 	}
 }

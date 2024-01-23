@@ -3,6 +3,7 @@
     "autoload": {
         "psr-4": {
             "Abruno\\TennisChallenge\\Tests\\": "tests/",
+            "Abruno\\TennisChallenge\\Foundation\\": "foundation/",
             "Abruno\\TennisChallenge\\": "src/"
         }
     },

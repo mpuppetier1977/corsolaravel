@@ -1,9 +1,10 @@
 <?php
 
-namespace Abruno\TennisChallenge;
+namespace Abruno\TennisChallenge\Services\Tennismatch;
 
-use Abruno\TennisChallenge\interfaces\TennisMatchInterface;
+use Abruno\TennisChallenge\Player;
 use Abruno\TennisChallenge\traits\TennisMatchTrait;
+use Abruno\TennisChallenge\interfaces\TennisMatchInterface;
 
 final class TennisMatch implements TennisMatchInterface {
 	use TennisMatchTrait;
@@ -11,15 +12,10 @@ final class TennisMatch implements TennisMatchInterface {
 	private Player $playerA;
 	private Player $playerB;
 
-	/**
-	 * @param Player $playerA
-	 * @param Player $playerB
-	 */
-	public function __construct(Player $playerA, Player $playerB) {
+	public function setPlayers(Player $playerA, Player $playerB){
 		$this->playerA = $playerA;
 		$this->playerB = $playerB;
 	}
-
 	/**
 	 * @return Player
 	 */
