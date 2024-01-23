@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Abruno\TennisChallenge\Player;
-use Abruno\TennisChallenge\services\tennismatch\TennisMatch;
+use Abruno\TennisChallenge\services\Tennismatch\TennisMatch;
 use Abruno\TennisChallenge\Services\Tennismatch\Facade\TennisMatchFacade;
 
 final class BasicTest extends TestCase
