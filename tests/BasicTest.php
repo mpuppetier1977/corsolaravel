@@ -1,5 +1,5 @@
 <?php
-
+namespace Abruno\TennisChallenge\Tests;
 use PHPUnit\Framework\TestCase;
 use Abruno\TennisChallenge\Player;
 use Abruno\TennisChallenge\services\Tennismatch\TennisMatch;
