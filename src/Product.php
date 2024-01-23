@@ -21,7 +21,7 @@ class Product {
 	}
 
 	public function calculateTotalPrice() : float {
-		$discountedPrice = $this->applyDiscount($this->price);
+		$discountedPrice = $this->applyDiscount($this->price * $this->quantity);
 		$taxedPrice = $this->applyTax($discountedPrice);
 		$totalPrice = $this->applyShipping($taxedPrice);
 
