@@ -38,7 +38,7 @@ class Product {
 		return $price * 1.08;
 	}
 
-	private function applyShipping($price) : float {
+	private function applyShipping(float $price) : float {
 		// Aggiunge il costo della spedizione al prezzo
 		return $price + 5;
 	}
